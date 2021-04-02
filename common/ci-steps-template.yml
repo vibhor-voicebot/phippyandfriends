@@ -35,6 +35,7 @@ steps:
 - bash: |
     cd $(projectName)
     echo '$(registryPassword)' | helm registry login $(registryName).azurecr.io --username $(registryLogin) --password-stdin 
+    ls -lrt /home/vsts/work/1/s/
     helm chart save $(build.sourcesdirectory)/ $(registryServerName)/$(projectName):latest
     helm chart push $(registryServerName)/$(projectName):latest
     #echo $(jq -n --arg version "$(helmChartVersion)" '{helmChartVersion: $version}') > $(build.artifactStagingDirectory)/variables.json

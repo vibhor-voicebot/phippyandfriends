@@ -8,7 +8,6 @@ steps:
   displayName: 'docker build'
 - bash: |
   echo "registry password is $(registryPassword)"
-  echo "registryLogin is $(registryLogin)"  
   echo '$(registryPassword)' | docker login \
         $(registryServerName) \
         -u $(registryLogin) \

@@ -34,10 +34,10 @@ steps:
   displayName: 'helm package'
 - bash: |
     cd $(projectName)
-    chartPackage=$(ls $(projectName)-$(helmChartVersion).tgz)
     echo '$(registryPassword)' | helm registry login $(registryName).azurecr.io --username $(registryLogin) --password-stdin 
-    helm chart push $chartPackage
-    echo $(jq -n --arg version "$(helmChartVersion)" '{helmChartVersion: $version}') > $(build.artifactStagingDirectory)/variables.json
+    helm chart save $(projectName)/ $(registryServerName)/$(projectName):latest
+    helm chart push $(registryServerName)/$(projectName):latest
+    #echo $(jq -n --arg version "$(helmChartVersion)" '{helmChartVersion: $version}') > $(build.artifactStagingDirectory)/variables.json
   failOnStderr: true
   name: helmPush
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))

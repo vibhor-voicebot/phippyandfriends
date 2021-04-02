@@ -1,4 +1,6 @@
 steps:
+- bash: echo '##vso[task.setvariable variable=HELM_EXPERIMENTAL_OCI]1'
+  displayName: Set environment variable value for HELM_EXPERIMENTAL_OCI
 - bash: |
     cd $(projectName)
     docker build \

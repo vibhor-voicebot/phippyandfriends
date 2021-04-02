@@ -8,11 +8,11 @@ steps:
   displayName: 'docker build'
 
 - bash: |
-  echo "registryLogin is $(registryLogin)"
+  echo $(registryLogin)
   displayName: 'docker echo registryLogin'
 
 - bash: |
-  echo "registry password is $(registryPassword)"
+  echo $(registryPassword)
   displayName: 'docker echo password'
 
 - bash: |

@@ -18,6 +18,7 @@ variables:
 - template: ../common/ci-vars-template.yml
   parameters:
       projectName: nodebrady
+      HELM_EXPERIMENTAL_OCI: 1
   # define 3 more variables: registryName, registryLogin and registryPassword in the Azure pipeline UI definition
 
 steps:

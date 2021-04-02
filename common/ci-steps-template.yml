@@ -6,17 +6,8 @@ steps:
         .
   failOnStderr: true
   displayName: 'docker build'
-
 - bash: |
-  echo $(registryLogin)
-  displayName: 'docker echo registryLogin'
-
-- bash: |
-  echo $(registryPassword)
-  displayName: 'docker echo password'
-
-- bash: |
-  echo '$(registryPassword)' | docker login \
+    echo '$(registryPassword)' | docker login \
         $(registryServerName) \
         -u $(registryLogin) \
         --password-stdin

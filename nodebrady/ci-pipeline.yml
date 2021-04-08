@@ -21,7 +21,7 @@ variables:
   imageName: ${{ parameters.projectName }}
   imageTag: $(build.buildId)
   helmChartVersion: $(build.buildId)
-  k8sNamespace: $(k8sNamespace)
+  kubeNS: $(k8sNamespace)
   
 
 
@@ -30,8 +30,11 @@ steps:
   displayName: Set environment variable value for HELM_EXPERIMENTAL_OCI
 - bash: echo '##vso[task.setvariable variable=projectName]nodebrady'
   displayName: Set environment variable value for projectName
-- bash: echo '##vso[task.setvariable variable=k8sNamespace]$(k8sNamespace)'
-  displayName: Set environment variable value for k8sNamespace
+- bash: echo '##vso[task.setvariable variable=kubeNamespace]$(kubeNS)'
+  displayName: Set environment variable value for kubeNamespace
+- bash: echo "kubeNamespace = $(KUBENAMESPACE)"
+- bash: echo "kubeNamespace = $(kubeNamespace)"
+- bash: echo "kubeNamespace = $(kubeNS)"
 - bash: 'cd $(projectName) && docker build -t $(registryServerName)/$(imageName):$(imageTag)
     .
 

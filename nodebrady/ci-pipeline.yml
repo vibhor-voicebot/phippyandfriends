@@ -26,7 +26,7 @@ variables:
 resources: 
   pipelines:
   - pipeline: ci-pipeline
-    source: nodebrady-ci
+    source: Node15.DockerCI
     trigger:
       enabled: true
       branches:

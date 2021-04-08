@@ -94,6 +94,7 @@ steps:
         --username $(registryLogin) \
         --password '$(registryPassword)'
     #helmChartVersion=$(jq .helmChartVersion $(pipeline.workspace)/ci-pipeline/build-artifact/variables.json -r)
+    helm repo update
     helm upgrade --namespace $(kubeNS) --create-namespace  --install  --wait  --version 3.2.3  --set image.repository=$(registryServerName)/$(projectName)  --set ingress.enabled=false  $(projectName)  $(registryName)/$(projectName)
   failOnStderr: true
   displayName: 'deploy helm chart'

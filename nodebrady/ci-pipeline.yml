@@ -80,7 +80,7 @@ steps:
   inputs:
     helmVersionToInstall: $(helmVersion)
 - bash: |
-   echo "$(aksSpId) | $(aksSpSecret) | $(aksSpTenantId) | k8sNamespace = $(k8sNamespace)"
+   echo "$(aksSpId) | $(aksSpSecret) | $(aksSpTenantId)"
    az login --service-principal --username $(aksSpId) --password '$(aksSpSecret)' --tenant $(aksSpTenantId)
     az aks get-credentials \
         -n $(aks) \

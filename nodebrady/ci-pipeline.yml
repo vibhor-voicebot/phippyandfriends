@@ -22,6 +22,17 @@ variables:
   imageTag: $(build.buildId)
   helmChartVersion: $(build.buildId)
   k8sNamespace: $(k8sNamespace)
+  
+resources: 
+  pipelines:
+  - pipeline: ci-pipeline
+    source: nodebrady-ci
+    trigger:
+      enabled: true
+      branches:
+        include:
+          - master
+
 steps:
 - bash: echo '##vso[task.setvariable variable=HELM_EXPERIMENTAL_OCI]1'
   displayName: Set environment variable value for HELM_EXPERIMENTAL_OCI
@@ -75,7 +86,7 @@ steps:
   displayName: 'install helm'
   inputs:
     helmVersionToInstall: $(helmVersion)
-- download: Node15.DockerCI
+- download: ci-pipeline
   artifact: build-artifact
 - bash: |
    az login \

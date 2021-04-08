@@ -80,7 +80,7 @@ steps:
   inputs:
     helmVersionToInstall: $(helmVersion)
 - bash: |
-   echo "$(aksSpId) | $(aksSpSecret) | $(aksSpTenantId)"
+   echo "$(aksSpId) | $(aksSpSecret) | $(aksSpTenantId) | k8sNamespace = $(k8sNamespace)"
    az login --service-principal --username $(aksSpId) --password '$(aksSpSecret)' --tenant $(aksSpTenantId)
     az aks get-credentials \
         -n $(aks) \
@@ -91,7 +91,7 @@ steps:
         --username $(registryLogin) \
         --password '$(registryPassword)'
     #helmChartVersion=$(jq .helmChartVersion $(pipeline.workspace)/ci-pipeline/build-artifact/variables.json -r)
-    helm upgrade --namespace $(k8sNamespace) --create-namespace  --install  --wait  --version 3.2.3  --set image.repository=$(registryServerName)/$(projectName)  --set ingress.enabled=false  $(projectName)  $(registryName)/$(projectName)
+    helm upgrade --namespace genpact-uinode --create-namespace  --install  --wait  --version 3.2.3  --set image.repository=$(registryServerName)/$(projectName)  --set ingress.enabled=false  $(projectName)  $(registryName)/$(projectName)
   failOnStderr: true
   displayName: 'deploy helm chart'
 

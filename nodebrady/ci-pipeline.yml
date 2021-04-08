@@ -99,8 +99,12 @@ steps:
     #helm upgrade --namespace $(kubeNS) --create-namespace  --install  --wait  --version 3.2.3  --set image.repository=$(registryServerName)/$(projectName)  --set ingress.enabled=false  $(projectName)  $(registryServerName)/$(projectName)
     #kubectl get svc,pod,ing --namespace $(kubeNS)
     docker container run -d -it --name $(kubeNS) $(registryServerName)/$(imageName):$(imageTag)
+    echo "sleeping for 20s to let the docker container start & run"
+    sleep 20s
     docker container list
-    kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379 --generator=run/v1 --kubeconfig /home/vsts/.kube/config
+    kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
+    echo "sleeping for 20s to let the Kubernetes Cluster/Pod start & run"
+    sleep 20s    
     kubectl get pods
   failOnStderr: true
   displayName: 'deploy helm chart'

@@ -72,17 +72,8 @@ steps:
   artifact: build-artifact
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
   
-resources: 
-  pipelines:
-  - pipeline: ci-pipeline
-    source: Node15.DockerCI
-    trigger:
-      enabled: true
-      branches:
-        include:
-          - master  
+
   
-steps:
 - checkout: none
 - task: HelmInstaller@1
   displayName: 'install helm'
@@ -117,3 +108,13 @@ steps:
         $(registryName)/$(projectName)
   failOnStderr: true
   displayName: 'deploy helm chart'
+
+resources: 
+  pipelines:
+  - pipeline: ci-pipeline
+    source: Node15.DockerCI
+    trigger:
+      enabled: true
+      branches:
+        include:
+          - master  

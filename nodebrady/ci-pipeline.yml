@@ -73,14 +73,10 @@ steps:
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
   
 
-  
-- checkout: none
 - task: HelmInstaller@1
   displayName: 'install helm'
   inputs:
     helmVersionToInstall: $(helmVersion)
-- download: ci-pipeline
-  artifact: build-artifact
 - bash: |
    az login \
         --service-principal \
@@ -109,12 +105,3 @@ steps:
   failOnStderr: true
   displayName: 'deploy helm chart'
 
-resources: 
-  pipelines:
-  - pipeline: ci-pipeline
-    source: Node15.DockerCI
-    trigger:
-      enabled: true
-      branches:
-        include:
-          - master  

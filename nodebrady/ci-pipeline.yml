@@ -95,8 +95,12 @@ steps:
         --password '$(registryPassword)'
     #helmChartVersion=$(jq .helmChartVersion $(pipeline.workspace)/ci-pipeline/build-artifact/variables.json -r)
     helm repo update
-    helm upgrade --namespace $(kubeNS) --create-namespace  --install  --wait  --version 3.2.3  --set image.repository=$(registryServerName)/$(projectName)  --set ingress.enabled=false  $(projectName)  $(registryServerName)/$(projectName)
-    kubectl get svc,pod,ing --namespace $(kubeNS)
+    #helm upgrade --namespace $(kubeNS) --create-namespace  --install  --wait  --version 3.2.3  --set image.repository=$(registryServerName)/$(projectName)  --set ingress.enabled=false  $(projectName)  $(registryServerName)/$(projectName)
+    #kubectl get svc,pod,ing --namespace $(kubeNS)
+    docker container run -d -it --name $(kubeNS) $(registryServerName)/$(imageName):$(imageTag)
+    docker container list
+    kubectl run $(aks) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379 --generator=run/v1
+    kubectl get pods
   failOnStderr: true
   displayName: 'deploy helm chart'
 

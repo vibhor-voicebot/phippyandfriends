@@ -104,8 +104,10 @@ steps:
     docker container list
     #kubectl delete deployments $(kubeNS)
     #kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
-    cat /home/vsts/.kube/config
-    kubectl run genpact-uinode1 --image=$(registryServerName)/$(imageName) --port=6379  --kubeconfig /home/vsts/.kube/config
+    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n    name: genpact-uinode2\nspec:\n    containers:\n    - name: $(kubeNS)\n      image: $(registryServerName)/$(imageName):latest\n      ports:\n      - containerPort: 6379" > /home/vsts/.kube/create-ipod.yml
+    cat /home/vsts/.kube/create-ipod.yml
+    kubectl create -f /home/vsts/.kube/create-ipod.yml
+    #kubectl run genpact-uinode1 --image=$(registryServerName)/$(imageName) --port=6379  --kubeconfig /home/vsts/.kube/config
     echo "sleeping for 20s to let the Kubernetes Cluster/Pod start & run"
     sleep 20s    
     kubectl get pods

@@ -86,8 +86,9 @@ steps:
    echo "$(aksSpId) | $(aksSpSecret) | $(aksSpTenantId) | kubeNS = $(kubeNS)"
    #az login --service-principal --username $(aksSpId) --password '$(aksSpSecret)' --tenant $(aksSpTenantId)
    az login --service-principal --username $(aksSpId) --password 'JUwWzI87liH1dCZQcT4RhY_FGOWXU86zPQ' --tenant $(aksSpTenantId)
-   kubeconfigVal=`az aks get-credentials  -n $(aks)  -g $(rg)  | awk -F"in " '{print $2}'`
-   echo "kubeconfigVal+++++++++++++ $(kubeconfigVal)"
+   echo $(az aks get-credentials  -n $(aks)  -g $(rg))
+   kubeconfigVal=`echo $(az aks get-credentials  -n $(aks)  -g $(rg))  | awk -F"in " '{print $2}'`
+   echo "kubeconfigVal is  $(kubeconfigVal)"
    helm repo add \
         $(registryName) \
         https://$(registryServerName)/helm/v1/repo \

@@ -75,7 +75,7 @@ steps:
   displayName: 'install helm'
   inputs:
     helmVersionToInstall: $(helmVersion)
-- download: ci-pipeline
+- download: Node15.DockerCI
   artifact: build-artifact
 - bash: |
    az login \

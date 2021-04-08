@@ -30,6 +30,8 @@ steps:
   displayName: Set environment variable value for HELM_EXPERIMENTAL_OCI
 - bash: echo '##vso[task.setvariable variable=projectName]nodebrady'
   displayName: Set environment variable value for projectName
+- bash: echo '##vso[task.setvariable variable=k8sNamespace]$(k8sNamespace)'
+  displayName: Set environment variable value for k8sNamespace
 - bash: 'cd $(projectName) && docker build -t $(registryServerName)/$(imageName):$(imageTag)
     .
 

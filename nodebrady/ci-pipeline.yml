@@ -100,7 +100,7 @@ steps:
     #kubectl get svc,pod,ing --namespace $(kubeNS)
     docker container run -d -it --name $(kubeNS) $(registryServerName)/$(imageName):$(imageTag)
     docker container list
-    kubectl run $(aks) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379 --generator=run/v1 --kubeconfig /home/vsts/.kube/config
+    kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379 --generator=run/v1 --kubeconfig /home/vsts/.kube/config
     kubectl get pods
   failOnStderr: true
   displayName: 'deploy helm chart'

@@ -1,3 +1,9 @@
+parameters:
+- name: projectName
+  displayName: Project Name
+  type: string
+  default: nodebrady   
+  
 trigger:
   batch: true
   branches:
@@ -21,12 +27,6 @@ variables:
   imageTag: $(build.buildId)
   helmChartVersion: $(build.buildId)
   k8sNamespace: $(k8sNamespace)
-
-  parameters:
-      projectName: nodebrady
-      HELM_EXPERIMENTAL_OCI: 1
-  
-
   # All 9 variables: registryName, registryLogin and registryPassword etc. are declared & assigned with values in runtime in the Azure pipeline UI definition viz Framework
 
 steps:

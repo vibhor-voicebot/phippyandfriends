@@ -12,10 +12,7 @@ pr: none
 pool:
   vmImage: ubuntu-latest
 
-parameters:
-  projectName: nodebrady
-  HELM_EXPERIMENTAL_OCI: 1
-  
+
 variables:
   helmVersion: 3.2.3
   registryServerName: '$(registryName).azurecr.io'
@@ -25,12 +22,18 @@ variables:
   helmChartVersion: $(build.buildId)
   k8sNamespace: $(k8sNamespace)
 
+  parameters:
+      projectName: nodebrady
+      HELM_EXPERIMENTAL_OCI: 1
+  
 
   # All 9 variables: registryName, registryLogin and registryPassword etc. are declared & assigned with values in runtime in the Azure pipeline UI definition viz Framework
 
 steps:
 - bash: echo '##vso[task.setvariable variable=HELM_EXPERIMENTAL_OCI]1'
   displayName: Set environment variable value for HELM_EXPERIMENTAL_OCI
+- bash: echo '##vso[task.setvariable variable=projectName]nodebrady'
+  displayName: Set environment variable value for projectName  
 - bash: |
     cd $(projectName)
     docker build \

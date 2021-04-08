@@ -23,15 +23,7 @@ variables:
   helmChartVersion: $(build.buildId)
   k8sNamespace: $(k8sNamespace)
   
-resources: 
-  pipelines:
-  - pipeline: ci-pipeline
-    source: Node15.DockerCI
-    trigger:
-      enabled: true
-      branches:
-        include:
-          - master
+
 
 steps:
 - bash: echo '##vso[task.setvariable variable=HELM_EXPERIMENTAL_OCI]1'
@@ -80,7 +72,17 @@ steps:
   artifact: build-artifact
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
   
-
+resources: 
+  pipelines:
+  - pipeline: ci-pipeline
+    source: Node15.DockerCI
+    trigger:
+      enabled: true
+      branches:
+        include:
+          - master  
+  
+steps:
 - checkout: none
 - task: HelmInstaller@1
   displayName: 'install helm'

@@ -102,7 +102,9 @@ steps:
     echo "sleeping for 20s to let the docker container start & run"
     sleep 20s
     docker container list
-    kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
+    kubectl delete deployments $(kubeNS)
+    #kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
+    kubectl run genpact-uipod --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
     echo "sleeping for 20s to let the Kubernetes Cluster/Pod start & run"
     sleep 20s    
     kubectl get pods

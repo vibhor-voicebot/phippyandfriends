@@ -2,7 +2,7 @@ parameters:
 - name: projectName
   displayName: Project Name
   type: string
-  default: nodebrady
+  default: nodejs
 trigger:
   batch: true
   branches:

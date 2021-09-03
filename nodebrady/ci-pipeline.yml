@@ -52,7 +52,7 @@ steps:
     '
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
   displayName: docker login
-- bash: 'docker push $(registryServerName)/$(imageName):latest
+- bash: 'docker push $(registryServerName)/$(imageName):$(imageTag)
 
     '
   failOnStderr: true

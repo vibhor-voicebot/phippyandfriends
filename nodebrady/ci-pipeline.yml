@@ -39,7 +39,8 @@ steps:
 - bash: echo "kubeNamespace = $(kubeNS)"
 - bash: echo "kubeNamespace = $(namespaceplaceholder)"
 - bash: echo "projectName = $(projectName)"
-- bash: 'cd $(projectName) && docker build -t $(registryServerName)/$(imageName):$(imageTag)
+#- bash: 'cd $(projectName) && docker build -t $(registryServerName)/$(imageName):$(imageTag) , ideally we should always use placeholder for projectname while doing cd command..
+- bash: 'cd nodebrady && docker build -t $(registryServerName)/$(imageName):$(imageTag)
     .
 
     '

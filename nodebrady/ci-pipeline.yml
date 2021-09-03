@@ -63,7 +63,7 @@ steps:
   inputs:
     helmVersionToInstall: $(helmVersion)
 - bash: 'cd nodebrady && helm package --version $(helmChartVersion) --app-version
-    $(imageTag) charts/$(projectName)
+    $(imageTag) charts/nodebrady
 
     '
   failOnStderr: true

@@ -113,6 +113,7 @@ steps:
     docker container list
     #kubectl delete deployments $(kubeNS)
     #kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
+    rm -rf /home/vsts/.kube/create-ipod.yml
     echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n    name: $(namespaceplaceholder)\nspec:\n    containers:\n    - name: $(namespaceplaceholder)\n      image: $(registryServerName)/$(imageName):$(imageTag)\n      ports:\n      - containerPort: 6379" > /home/vsts/.kube/create-ipod.yml
     cat /home/vsts/.kube/create-ipod.yml
     #echo "printing here ACR_Id........."

@@ -2,7 +2,7 @@ parameters:
 - name: projectName
   displayName: Project Name
   type: string
-  default: nodejs
+  default: npmisg
 trigger:
   batch: true
   branches:

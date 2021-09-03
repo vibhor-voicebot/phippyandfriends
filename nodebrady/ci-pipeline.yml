@@ -19,7 +19,7 @@ variables:
   registryServerName: $(registryName).azurecr.io
   projectName: ${{ parameters.projectName }}
   imageName: ${{ parameters.projectName }}
-  projectName: ${{ parameters.projectName }}
+  projectName1: ${{ parameters.projectName }}
   imageTag: $(build.buildId)
   helmChartVersion: $(build.buildId)
   kubeNS: $(k8sNamespace)
@@ -30,8 +30,8 @@ variables:
 steps:
 - bash: echo '##vso[task.setvariable variable=HELM_EXPERIMENTAL_OCI]1'
   displayName: Set environment variable value for HELM_EXPERIMENTAL_OCI
-#- bash: echo '##vso[task.setvariable variable=projectName]nodebrady'
-  #displayName: Set environment variable value for projectName
+- bash: echo '##vso[task.setvariable variable=projectName]$(projectName1)'
+  displayName: Set environment variable value for projectName
 - bash: echo '##vso[task.setvariable variable=kubeNamespace]$(kubeNS)'
   displayName: Set environment variable value for kubeNamespace
 - bash: echo "kubeNamespace = $(KUBENAMESPACE)"

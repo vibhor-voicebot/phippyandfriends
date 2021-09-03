@@ -52,7 +52,7 @@ steps:
     '
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/master'))
   displayName: docker login
-- bash: 'docker push $(registryServerName)/$(imageName):$(imageTag)
+- bash: 'docker push $(registryServerName)/$(imageName):latest
 
     '
   failOnStderr: true
@@ -107,7 +107,7 @@ steps:
     helm repo update
     #helm upgrade --namespace $(kubeNS) --create-namespace  --install  --wait  --version 3.2.3  --set image.repository=$(registryServerName)/$(projectName)  --set ingress.enabled=false  $(projectName)  $(registryServerName)/$(projectName)
     #kubectl get svc,pod,ing --namespace $(kubeNS)
-    docker container run -d -it --name $(kubeNS) $(registryServerName)/$(imageName):$(imageTag)
+    docker container run -d -it --name $(kubeNS) $(registryServerName)/$(imageName):latest
     echo "sleeping for 20s to let the docker container start & run"
     sleep 20s
     docker container list
@@ -115,7 +115,7 @@ steps:
     #kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
     rm -rf /home/vsts/.kube/create-ipod.yml
     kubectl delete pod $(namespaceplaceholder)
-    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n    name: $(namespaceplaceholder)\nspec:\n    containers:\n    - name: $(namespaceplaceholder)\n      image: $(registryServerName)/$(imageName):$(imageTag)\n      ports:\n      - containerPort: 6379" > /home/vsts/.kube/create-ipod.yml
+    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n    name: $(namespaceplaceholder)\nspec:\n    containers:\n    - name: $(namespaceplaceholder)\n      image: $(registryServerName)/$(imageName):latest\n      ports:\n      - containerPort: 6379" > /home/vsts/.kube/create-ipod.yml
     cat /home/vsts/.kube/create-ipod.yml
     #echo "printing here ACR_Id........."
     #echo $(az acr show -n $(registryName) -g $(rg) --query id -o tsv)

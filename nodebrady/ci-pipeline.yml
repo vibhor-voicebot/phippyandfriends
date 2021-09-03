@@ -21,8 +21,8 @@ variables:
   imageName: ${{ parameters.projectName }}
   imageTag: $(build.buildId)
   helmChartVersion: $(build.buildId)
-  kubeNS1: $(k8sNamespace)
-  kubeNS: ${{ lower(variables['System.kubeNS1'] ) }}
+  kubeNS: $(k8sNamespace)
+  namespaceplaceholder: genpactdde-npmeut  #in orgname-projectname format
   
 
 
@@ -36,6 +36,7 @@ steps:
 - bash: echo "kubeNamespace = $(KUBENAMESPACE)"
 - bash: echo "kubeNamespace = $(kubeNamespace)"
 - bash: echo "kubeNamespace = $(kubeNS)"
+- bash: echo "kubeNamespace = $(namespaceplaceholder)"
 - bash: 'cd $(projectName) && docker build -t $(registryServerName)/$(imageName):$(imageTag)
     .
 
@@ -109,7 +110,7 @@ steps:
     docker container list
     #kubectl delete deployments $(kubeNS)
     #kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
-    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n    name: genpact-npmeut\nspec:\n    containers:\n    - name: $(kubeNS)\n      image: $(registryServerName)/$(imageName):$(imageTag)\n      ports:\n      - containerPort: 6379" > /home/vsts/.kube/create-ipod.yml
+    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n    name: $(namespaceplaceholder)\nspec:\n    containers:\n    - name: $(namespaceplaceholder)\n      image: $(registryServerName)/$(imageName):$(imageTag)\n      ports:\n      - containerPort: 6379" > /home/vsts/.kube/create-ipod.yml
     cat /home/vsts/.kube/create-ipod.yml
     #echo "printing here ACR_Id........."
     #echo $(az acr show -n $(registryName) -g $(rg) --query id -o tsv)

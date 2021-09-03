@@ -108,11 +108,11 @@ steps:
     docker container list
     #kubectl delete deployments $(kubeNS)
     #kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
-    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n    name: genpact-uinode5\nspec:\n    containers:\n    - name: $(kubeNS)\n      image: $(registryServerName)/$(imageName):$(imageTag)\n      ports:\n      - containerPort: 6379" > /home/vsts/.kube/create-ipod.yml
+    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n    name: genpact-npmeut\nspec:\n    containers:\n    - name: $(kubeNS)\n      image: $(registryServerName)/$(imageName):$(imageTag)\n      ports:\n      - containerPort: 6379" > /home/vsts/.kube/create-ipod.yml
     cat /home/vsts/.kube/create-ipod.yml
     #echo "printing here ACR_Id........."
     #echo $(az acr show -n $(registryName) -g $(rg) --query id -o tsv)
-    #az aks update -g $rg -n genpact-uinode5 --attach-acr $ACR_ID
+    #az aks update -g $rg -n genpact-npmeut --attach-acr $ACR_ID
     kubectl create -f /home/vsts/.kube/create-ipod.yml
     #kubectl run genpact-uinode1 --image=$(registryServerName)/$(imageName) --port=6379  --kubeconfig /home/vsts/.kube/config
     echo "sleeping for 20s to let the Kubernetes Cluster/Pod start & run"

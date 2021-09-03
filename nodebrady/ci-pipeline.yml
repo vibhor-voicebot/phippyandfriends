@@ -2,7 +2,7 @@ parameters:
 - name: projectName
   displayName: Project Name
   type: string
-  default: npmwm
+  default: npmeut
 trigger:
   batch: true
   branches:

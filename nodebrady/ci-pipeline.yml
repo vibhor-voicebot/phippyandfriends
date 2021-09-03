@@ -89,7 +89,7 @@ steps:
    #echo $(az acr show -n $(registryName) -g $(rg) --query id -o tsv)
 
 
-   az login --service-principal --username $(aksSpId) --password 'JUwWzI87liH1dCZQcT4RhY_FGOWXU86zPQ' --tenant $(aksSpTenantId)
+   az login --service-principal --username $(aksSpId) --password $(aksSpSecret) --tenant $(aksSpTenantId)
    echo $(az aks get-credentials  -n $(aks)  -g $(rg))
    #kubeconfigVal=`echo $(az aks get-credentials  -n $(aks)  -g $(rg))  | awk -F"in " '{print $2}'`
    #echo "kubeconfigVal is  $(kubeconfigVal)"

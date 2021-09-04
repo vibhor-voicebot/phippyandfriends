@@ -114,9 +114,10 @@ steps:
     #kubectl delete deployments $(kubeNS)
     #kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
     rm -rf /home/vsts/.kube/create-ipod.yml
-    kubectl delete pod $(namespaceplaceholder)
+    kubectl delete pod $(namespaceplaceholder) || echo "error deleting pod.."
     echo "Creating image pull secret with kubernetes cluster with sleep 15s.."
-    kubectl create secret docker-registry npmeut-acr-secret --docker-server=$(registryName).azurecr.io --docker-username=$(registryLogin) --docker-password=$(registryPassword)
+    kubectl delete secret npmeut-acr-secret || echo "deleting secret cmd failed.."
+    kubectl create secret docker-registry npmeut-acr-secret --docker-server=$(registryName).azurecr.io --docker-username=$(registryLogin) --docker-password=$(registryPassword)  || echo "secret already exists.."
     sleep 15s
     echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n   name: $(namespaceplaceholder)\nspec:\n   containers:\n    - name: $(namespaceplaceholder)\n      image: $(registryServerName)/$(imageName):latest\n      imagePullPolicy: IfNotPresent\n   imagePullSecrets:\n    - name: $(projectName)-acr-secret" > /home/vsts/.kube/create-ipod.yml
     cat /home/vsts/.kube/create-ipod.yml

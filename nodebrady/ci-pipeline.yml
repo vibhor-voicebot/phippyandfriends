@@ -115,7 +115,10 @@ steps:
     #kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
     rm -rf /home/vsts/.kube/create-ipod.yml
     kubectl delete pod $(namespaceplaceholder)
-    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n    name: $(namespaceplaceholder)\nspec:\n    containers:\n    - name: $(namespaceplaceholder)\n      image: $(registryServerName)/$(imageName):latest\n      ports:\n      - containerPort: 6379" > /home/vsts/.kube/create-ipod.yml
+    echo "Creating image pull secret with kubernetes cluster with sleep 15s.."
+    kubectl create secret docker-registry npmeut-acr-secret --namespace $(namespaceplaceholder) --docker-server=$(registryName).azurecr.io --docker-username=$(registryLogin) --docker-password=$(registryPassword)
+    sleep 15s
+    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n   name: $(projectName)-pod\n   namespace: $(namespaceplaceholder)\nspec:\n   containers:\n    - name: $(namespaceplaceholder)\n      image: $(registryServerName)/$(imageName):latest\n      imagePullPolicy: IfNotPresent\n   imagePullSecrets:    - name: $(projectName)-acr-secret" > /home/vsts/.kube/create-ipod.yml
     cat /home/vsts/.kube/create-ipod.yml
     #echo "printing here ACR_Id........."
     #echo $(az acr show -n $(registryName) -g $(rg) --query id -o tsv)

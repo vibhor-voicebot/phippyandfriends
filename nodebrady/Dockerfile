@@ -1,21 +1,21 @@
 # Build
-#FROM node:carbon AS base
+FROM node:carbon AS base
 
-#WORKDIR /app
+WORKDIR /app
 
 # Dependencies
-#FROM base AS dependencies  
+FROM base AS dependencies  
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
-#COPY package*.json ./
+COPY package*.json ./
 
 # Install app dependencies including 'devDependencies'
-#RUN npm install
+RUN npm install
 
 # Copy Files/Build ----
-#FROM dependencies AS build  
-#WORKDIR /app
-#COPY . /app
+FROM dependencies AS build  
+WORKDIR /app
+COPY . /app
 
 # Release with Alpine
 #FROM node:14.4.0-alpine AS release  
@@ -30,17 +30,6 @@
 #COPY --from=build /app ./
 
 #CMD ["npm", "start"]
-
-
-FROM node
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-COPY index.js ./
-COPY ./app ./app
-
-RUN npm install
 
 EXPOSE 3000
 CMD [ "npm", "start" ]

@@ -115,10 +115,10 @@ steps:
     #kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
     rm -rf /home/vsts/.kube/create-ipod.yml
     kubectl get nodes -o wide --namespace=genpactdde-npmeut
-    kubectl delete pod $(namespaceplaceholder)-pod || echo "error deleting pod.."
+    kubectl delete pod $(namespaceplaceholder)-pod  --namespace=genpactdde-npmeut || echo "error deleting pod.."
     echo "Creating image pull secret with kubernetes cluster with sleep 15s.."
-    kubectl delete secret npmeut-acr-secret || echo "deleting secret cmd failed.."
-    kubectl create namespace $(namespaceplaceholder)
+    kubectl delete secret npmeut-acr-secret --namespace=genpactdde-npmeut || echo "deleting secret cmd failed.."
+    kubectl create namespace $(namespaceplaceholder) || echo "error creating namedspace.."
     kubectl create secret docker-registry npmeut-acr-secret --namespace $(namespaceplaceholder)  --docker-server=$(registryName).azurecr.io --docker-username=$(registryLogin) --docker-password=$(registryPassword)  || echo "secret already exists.."
     sleep 15s
     #kubectl create clusterrolebinding default-view --clusterrole=view --serviceaccount=${aksacrdocker_orgname_projname}:default
@@ -127,7 +127,7 @@ steps:
     #echo "printing here ACR_Id........."
     #echo $(az acr show -n $(registryName) -g $(rg) --query id -o tsv)
     #az aks update -g $rg -n genpact-npmeut --attach-acr $ACR_ID
-    kubectl create -f /home/vsts/.kube/create-ipod.yml
+    kubectl create -f /home/vsts/.kube/create-ipod.yml 
     #kubectl run genpact-uinode1 --image=$(registryServerName)/$(imageName) --port=6379  --kubeconfig /home/vsts/.kube/config
     echo "sleeping for 20s to let the Kubernetes Cluster/Pod start & run"
     sleep 20s    

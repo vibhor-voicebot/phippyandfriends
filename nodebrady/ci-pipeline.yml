@@ -107,13 +107,14 @@ steps:
     helm repo update
     #helm upgrade --namespace $(kubeNS) --create-namespace  --install  --wait  --version 3.2.3  --set image.repository=$(registryServerName)/$(projectName)  --set ingress.enabled=false  $(projectName)  $(registryServerName)/$(projectName)
     #kubectl get svc,pod,ing --namespace $(kubeNS)
-    docker container run -d -it --name $(namespaceplaceholder) $(registryServerName)/$(imageName):$(imageTag)
+    #docker container run -d -it --name $(namespaceplaceholder) $(registryServerName)/$(imageName):$(imageTag)
     echo "sleeping for 20s to let the docker container start & run"
     sleep 20s
-    docker container list
+    #docker container list
     #kubectl delete deployments $(kubeNS)
     #kubectl run $(kubeNS) --image=$(registryServerName)/$(imageName):$(imageTag) --port=6379  --kubeconfig /home/vsts/.kube/config
     rm -rf /home/vsts/.kube/create-ipod.yml
+    kubectl get nodes -o wide --namespace=genpactdde-npmeut
     kubectl delete pod $(namespaceplaceholder)-pod || echo "error deleting pod.."
     echo "Creating image pull secret with kubernetes cluster with sleep 15s.."
     kubectl delete secret npmeut-acr-secret || echo "deleting secret cmd failed.."
@@ -121,7 +122,7 @@ steps:
     kubectl create secret docker-registry npmeut-acr-secret --namespace $(namespaceplaceholder)  --docker-server=$(registryName).azurecr.io --docker-username=$(registryLogin) --docker-password=$(registryPassword)  || echo "secret already exists.."
     sleep 15s
     #kubectl create clusterrolebinding default-view --clusterrole=view --serviceaccount=${aksacrdocker_orgname_projname}:default
-    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n   name: $(namespaceplaceholder)-pod\n   namespace: $(namespaceplaceholder)\nspec:\n   containers:\n    - name: $(namespaceplaceholder)-pod\n      image: $(registryServerName)/$(imageName):latest\n      imagePullPolicy: IfNotPresent\n   imagePullSecrets:\n    - name: $(projectName)-acr-secret" > /home/vsts/.kube/create-ipod.yml
+    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n   name: $(namespaceplaceholder)-pod\n   namespace: $(namespaceplaceholder)\nspec:\n   containers:\n    - name: $(namespaceplaceholder)-pod\n      image: $(registryServerName)/$(imageName):latest\n      command: ["npm", "start"]\n      imagePullPolicy: IfNotPresent\n   imagePullSecrets:\n    - name: $(projectName)-acr-secret" > /home/vsts/.kube/create-ipod.yml
     cat /home/vsts/.kube/create-ipod.yml
     #echo "printing here ACR_Id........."
     #echo $(az acr show -n $(registryName) -g $(rg) --query id -o tsv)
@@ -130,7 +131,7 @@ steps:
     #kubectl run genpact-uinode1 --image=$(registryServerName)/$(imageName) --port=6379  --kubeconfig /home/vsts/.kube/config
     echo "sleeping for 20s to let the Kubernetes Cluster/Pod start & run"
     sleep 20s    
-    kubectl get pods
+    kubectl get pods --namespace=genpactdde-npmeut
   failOnStderr: true
   displayName: 'deploy helm chart'
 

@@ -1,5 +1,6 @@
 # Build
-FROM node:carbon AS base
+#FROM node:carbon AS base
+FROM node:14.4.0-alpine AS base
 
 WORKDIR /app
 

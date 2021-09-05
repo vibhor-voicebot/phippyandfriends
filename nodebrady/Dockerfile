@@ -8,7 +8,7 @@ FROM node:${NODE_VERSION}-slim as dependencies
 WORKDIR /app
 
 RUN apt-get update
-RUN npm install --global npm node
+RUN npm install
 
 COPY package.json *package-lock.json *.npmrc ./
 

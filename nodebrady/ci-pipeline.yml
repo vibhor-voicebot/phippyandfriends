@@ -133,6 +133,6 @@ steps:
     sleep 20s    
     kubectl get pods --namespace=genpactdde-npmeut
     kubectl describe pod genpactdde-npmeut-pod --namespace genpactdde-npmeut
-  failOnStderr: true
+  failOnStderr: false
   displayName: 'deploy helm chart'
 

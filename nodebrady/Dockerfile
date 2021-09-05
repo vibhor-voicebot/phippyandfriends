@@ -7,7 +7,7 @@ ARG NODE_VERSION=11
 FROM node:${NODE_VERSION}-slim as dependencies
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y software-properties-common npm
+RUN apt-get update
 RUN npm install --global npm node-gyp
 
 COPY package.json *package-lock.json *.npmrc ./

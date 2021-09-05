@@ -8,7 +8,7 @@ FROM node:${NODE_VERSION}-slim as dependencies
 WORKDIR /app
 
 RUN apt-get update
-RUN npm install --global npm node-gyp
+RUN npm install --global npm node
 
 COPY package.json *package-lock.json *.npmrc ./
 

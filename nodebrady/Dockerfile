@@ -1,6 +1,6 @@
 # Build
 #FROM node:carbon AS base
-FROM node:14.4.0-alpine AS base
+FROM node:latest AS base
 
 WORKDIR /app
 
@@ -9,28 +9,17 @@ FROM base AS dependencies
 
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 COPY package*.json ./
+COPY . /app
+COPY --from=dependencies /app/package.json ./
+COPY --from=dependencies /app ./
 
 # Install app dependencies including 'devDependencies'
-RUN npm install
-
-# Copy Files/Build ----
-FROM dependencies AS build  
-WORKDIR /app
-COPY . /app
-
-# Release with Alpine
-#FROM node:14.4.0-alpine AS release  
-
-# Create app directory
-#WORKDIR /app
-
-#COPY --from=dependencies /app/package.json ./
-
-# Install app dependencies
-#RUN npm install --only=production
-#COPY --from=build /app ./
-
-#CMD ["npm", "start"]
-
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    npm
+RUN npm install npm@latest -g && \
+    npm install n -g && \
+    n latest
+    
 EXPOSE 3000
 CMD [ "npm", "start" ]

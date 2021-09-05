@@ -1,25 +1,33 @@
-# Build
-#FROM node:carbon AS base
-FROM node:latest AS base
+ARG NODE_VERSION=11
 
+###
+# 1. Dependencies
+###
+
+FROM node:${NODE_VERSION}-slim as dependencies
 WORKDIR /app
 
-# Dependencies
-FROM base AS dependencies  
+RUN apt-get update && apt-get install -y software-properties-common npmRUN npm install --global npm node-gyp
 
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-COPY package*.json ./
-COPY . /app
-COPY --from=dependencies /app/package.json ./
-COPY --from=dependencies /app ./
+COPY package.json *package-lock.json *.npmrc ./
 
-# Install app dependencies including 'devDependencies'
-RUN apt-get update && apt-get install -y \
-    software-properties-common \
-    npm
-RUN npm install npm@latest -g && \
-    npm install n -g && \
-    n latest
-    
+ARG NODE_ENV=production
+ENV NODE_ENV ${NODE_ENV}
+RUN npm ci
+
+###
+# 2. Application
+###
+
+FROM node:${NODE_VERSION}-slim
+WORKDIR /app
+
+COPY --from=dependencies /app/node_modules node_modules
+COPY . .
+
+ENV PATH="$PATH:/app/node_modules/.bin"
+ENV PORT 3000
+
 EXPOSE 3000
-CMD [ "npm", "start" ]
+
+CMD ["node", "app.js"]

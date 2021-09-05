@@ -122,7 +122,7 @@ steps:
     kubectl create secret docker-registry npmeut-acr-secret --namespace $(namespaceplaceholder)  --docker-server=$(registryName).azurecr.io --docker-username=$(registryLogin) --docker-password=$(registryPassword)  || echo "secret already exists.."
     sleep 15s
     #kubectl create clusterrolebinding default-view --clusterrole=view --serviceaccount=${aksacrdocker_orgname_projname}:default
-    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n   name: $(namespaceplaceholder)-pod\n   namespace: $(namespaceplaceholder)\nspec:\n   containers:\n    - name: $(namespaceplaceholder)-pod\n      image: $(registryServerName)/$(imageName):latest\n      ports:\n      - containerPort: 3000\n      imagePullPolicy: IfNotPresent\n   imagePullSecrets:\n    - name: $(projectName)-acr-secret" > /home/vsts/.kube/create-ipod.yml
+    echo -e "apiVersion: v1\nkind: Pod\nmetadata:\n   name: $(namespaceplaceholder)-pod\n   namespace: $(namespaceplaceholder)\nspec:\n   containers:\n    - name: $(namespaceplaceholder)-pod\n      image: $(registryServerName)/$(imageName):latest\n      command: ["node", "app.js"]\n      ports:\n      - containerPort: 3000\n      imagePullPolicy: IfNotPresent\n   imagePullSecrets:\n    - name: $(projectName)-acr-secret" > /home/vsts/.kube/create-ipod.yml
     cat /home/vsts/.kube/create-ipod.yml
     #echo "printing here ACR_Id........."
     #echo $(az acr show -n $(registryName) -g $(rg) --query id -o tsv)
